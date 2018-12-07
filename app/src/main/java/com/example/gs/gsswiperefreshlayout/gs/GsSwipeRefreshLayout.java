@@ -68,6 +68,8 @@ import android.widget.ListView;
  */
 public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingParent,
         NestedScrollingChild {
+    public static final String TAG = "bulong";
+
     // Maps to ProgressBar.Large style
     public static final int LARGE = CircularProgressDrawable.LARGE;
     // Maps to ProgressBar default style
@@ -363,6 +365,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     protected int getChildDrawingOrder(int childCount, int i) {
+        //Log.e(TAG, "getChildDrawingOrder childCount="+childCount+" i="+i);
         if (mCircleViewIndex < 0) {
             return i;
         } else if (i == childCount - 1) {
@@ -658,6 +661,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (mTarget instanceof ListView) {
             return ListViewCompat.canScrollList((ListView) mTarget, -1);
         }
+        ViewCompat.canScrollVertically(mTarget, -1);
         return mTarget.canScrollVertically(-1);
     }
 
@@ -1115,6 +1119,9 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         int targetTop = 0;
         targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
         int offset = targetTop - mCircleView.getTop();
+        Log.e(TAG, "moveToStart interpolatedTime="+interpolatedTime+" mFrom="+
+                mFrom+" mOriginalOffsetTop="+mOriginalOffsetTop+" targetTop="+targetTop+
+                " getTop="+mCircleView.getTop()+" offset="+offset);
         setTargetOffsetTopAndBottom(offset);
     }
 
@@ -1154,6 +1161,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = ev.getActionIndex();
         final int pointerId = ev.getPointerId(pointerIndex);
+        Log.e(TAG,"pointerIndex="+pointerIndex+" pointerId="+pointerId +" mActivePointerId="+mActivePointerId);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
