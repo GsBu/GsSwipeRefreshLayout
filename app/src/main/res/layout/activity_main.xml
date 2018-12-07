@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
-        android:id="@+id/srl_1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:background="@color/BISQUE">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_1"
+        <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
+            android:id="@+id/srl_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="200dp"
+            android:background="@color/BISQUE">
 
-    </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-    <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
-        android:id="@+id/srl_2"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/BISQUE">
+        </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_2"
+        <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
+            android:id="@+id/srl_2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="70dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/BISQUE">
 
-    </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
-</LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
+
+        <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
+            android:id="@+id/srl_3"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/BISQUE">
+
+            <ListView
+                android:id="@+id/lv_1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
+    </LinearLayout>
+</FrameLayout>
