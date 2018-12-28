@@ -688,6 +688,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
                 || mRefreshing || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
+            Log.e(TAG, "onInterceptTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
             return false;
         }
 
@@ -749,6 +750,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
+        Log.e(TAG,"onStartNestedScroll");
         return isEnabled() && !mReturningToStart && !mRefreshing
                 && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
@@ -761,6 +763,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
         mTotalUnconsumed = 0;
         mNestedScrollInProgress = true;
+        Log.e(TAG,"onNestedScrollAccepted");
     }
 
     @Override
@@ -992,6 +995,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
                 || mRefreshing || mNestedScrollInProgress) {
+            Log.e(TAG, "onTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }

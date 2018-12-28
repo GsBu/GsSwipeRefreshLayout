@@ -11,6 +11,12 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+        <Button
+            android:id="@+id/bt_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ListView"/>
+
         <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
             android:id="@+id/srl_1"
             android:layout_width="match_parent"

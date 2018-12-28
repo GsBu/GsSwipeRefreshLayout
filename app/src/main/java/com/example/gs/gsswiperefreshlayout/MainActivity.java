@@ -1,12 +1,15 @@
 package com.example.gs.gsswiperefreshlayout;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.gs.gsswiperefreshlayout.adapter.GsListViewAdapter;
 import com.example.gs.gsswiperefreshlayout.adapter.GsRecyclerViewAdapter;
@@ -15,12 +18,13 @@ import com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView rv1, rv2;
     private ListView lv1;
     private GsSwipeRefreshLayout srl1, srl2, srl3;
+    private Button bt1;
 
     private List<String> mDataList1 = new ArrayList<>();
     private List<String> mDataList2 = new ArrayList<>();
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         srl1 = findViewById(R.id.srl_1);
         srl2 = findViewById(R.id.srl_2);
         srl3 = findViewById(R.id.srl_3);
+        bt1 = findViewById(R.id.bt_1);
 
         initData();
         mAdapter1 = new GsRecyclerViewAdapter(this, mDataList1);
@@ -64,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
         rv2.setAdapter(mAdapter2);
 
         lv1.setAdapter(mAdapter3);
+
+        bt1.setOnClickListener(this);
     }
 
     private void initSwipeRefreshLayout() {
@@ -156,5 +163,18 @@ public class MainActivity extends AppCompatActivity {
                 srl3.setRefreshing(false);
             }
         }, 2000);
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent intent;
+        switch(v.getId()){
+            case R.id.bt_1:
+                intent = new Intent(MainActivity.this, ListViewActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
+        }
     }
 }
