@@ -9,9 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 
-import com.example.gs.gsswiperefreshlayout.adapter.GsListViewAdapter;
 import com.example.gs.gsswiperefreshlayout.adapter.GsRecyclerViewAdapter;
 import com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout;
 
@@ -21,16 +19,14 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private RecyclerView rv1, rv2;
-    private ListView lv1;
+    private RecyclerView rv1, rv2, rv3;
     private GsSwipeRefreshLayout srl1, srl2, srl3;
-    private Button bt1;
+    private Button bt1, bt2;
 
     private List<String> mDataList1 = new ArrayList<>();
     private List<String> mDataList2 = new ArrayList<>();
     private List<String> mDataList3 = new ArrayList<>();
-    private GsRecyclerViewAdapter mAdapter1, mAdapter2;
-    private GsListViewAdapter mAdapter3;
+    private GsRecyclerViewAdapter mAdapter1, mAdapter2, mAdapter3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +35,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         rv1 = findViewById(R.id.rv_1);
         rv2 = findViewById(R.id.rv_2);
-        lv1 = findViewById(R.id.lv_1);
+        rv3 = findViewById(R.id.rv_3);
         srl1 = findViewById(R.id.srl_1);
         srl2 = findViewById(R.id.srl_2);
         srl3 = findViewById(R.id.srl_3);
+
         bt1 = findViewById(R.id.bt_1);
+        bt2 = findViewById(R.id.bt_2);
 
         initData();
         mAdapter1 = new GsRecyclerViewAdapter(this, mDataList1);
         mAdapter2 = new GsRecyclerViewAdapter(this, mDataList2);
-        mAdapter3 = new GsListViewAdapter(this, R.layout.item_gs, mDataList3);
+        mAdapter3 = new GsRecyclerViewAdapter(this, mDataList3);
         initView();
         initSwipeRefreshLayout();
     }
@@ -68,9 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rv2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
         rv2.setAdapter(mAdapter2);
 
-        lv1.setAdapter(mAdapter3);
+        rv3.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        rv3.setAdapter(mAdapter3);
 
         bt1.setOnClickListener(this);
+        bt2.setOnClickListener(this);
     }
 
     private void initSwipeRefreshLayout() {
@@ -172,6 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.bt_1:
                 intent = new Intent(MainActivity.this, ListViewActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.bt_2:
+
                 break;
             default:
                 break;

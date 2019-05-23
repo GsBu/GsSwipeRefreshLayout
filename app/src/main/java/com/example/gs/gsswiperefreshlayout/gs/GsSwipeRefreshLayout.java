@@ -404,6 +404,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      * @param refreshing Whether or not the view should show refresh progress.
      */
     public void setRefreshing(boolean refreshing) {
+        //Log.e(TAG, "setRefreshing()"+refreshing);
         if (refreshing && mRefreshing != refreshing) {
             // scale and show
             mRefreshing = refreshing;
@@ -422,6 +423,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void startScaleUpAnimation(AnimationListener listener) {
+        //Log.e(TAG, "startScaleUpAnimation()");
         mCircleView.setVisibility(View.VISIBLE);
         mProgress.setAlpha(MAX_ALPHA);
         mScaleAnimation = new Animation() {
@@ -461,6 +463,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     void startScaleDownAnimation(Animation.AnimationListener listener) {
+        //Log.e(TAG, "startScaleDownAnimation()");
         mScaleDownAnimation = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
@@ -474,14 +477,17 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void startProgressAlphaStartAnimation() {
+        //Log.e(TAG, "startProgressAlphaStartAnimation()");
         mAlphaStartAnimation = startAlphaAnimation(mProgress.getAlpha(), STARTING_PROGRESS_ALPHA);
     }
 
     private void startProgressAlphaMaxAnimation() {
+        //Log.e(TAG, "startProgressAlphaMaxAnimation()");
         mAlphaMaxAnimation = startAlphaAnimation(mProgress.getAlpha(), MAX_ALPHA);
     }
 
     private Animation startAlphaAnimation(final int startingAlpha, final int endingAlpha) {
+        //Log.e(TAG, "startAlphaAnimation() startingAlpha="+startingAlpha+" endingAlpha="+endingAlpha);
         Animation alpha = new Animation() {
             @Override
             public void applyTransformation(float interpolatedTime, Transformation t) {
@@ -592,6 +598,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        Log.e(TAG,"onLayout 布局");
         final int width = getMeasuredWidth();
         final int height = getMeasuredHeight();
         if (getChildCount() == 0) {
@@ -617,6 +624,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        Log.e(TAG,"onMeasure 测量");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         if (mTarget == null) {
             ensureTarget();
@@ -655,6 +663,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
      *         scroll up. Override this if the child view is a custom view.
      */
     public boolean canChildScrollUp() {
+        //Log.e(TAG, "canChildScrollUp()");
         if (mChildScrollUpCallback != null) {
             return mChildScrollUpCallback.canChildScrollUp(this, mTarget);
         }
@@ -676,6 +685,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        //Log.e(TAG, "onInterceptTouchEvent()");
         ensureTarget();
 
         final int action = ev.getActionMasked();
@@ -688,7 +698,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
                 || mRefreshing || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
-            Log.e(TAG, "onInterceptTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
+            //Log.e(TAG, "onInterceptTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
             return false;
         }
 
@@ -735,6 +745,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public void requestDisallowInterceptTouchEvent(boolean b) {
+        //Log.e(TAG, "requestDisallowInterceptTouchEvent()");
         // if this is a List < L or another view that doesn't support nested
         // scrolling, ignore this request so that the vertical scroll event
         // isn't stolen
@@ -750,7 +761,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        Log.e(TAG,"onStartNestedScroll");
+        //Log.e(TAG,"onStartNestedScroll");
         return isEnabled() && !mReturningToStart && !mRefreshing
                 && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
@@ -763,7 +774,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         startNestedScroll(axes & ViewCompat.SCROLL_AXIS_VERTICAL);
         mTotalUnconsumed = 0;
         mNestedScrollInProgress = true;
-        Log.e(TAG,"onNestedScrollAccepted");
+        //Log.e(TAG,"onNestedScrollAccepted");
     }
 
     @Override
@@ -903,6 +914,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void moveSpinner(float overscrollTop) {
+        //Log.e(TAG, "moveSpinner()"+overscrollTop);
         mProgress.setArrowEnabled(true);
         float originalDragPercent = overscrollTop / mTotalDragDistance;
 
@@ -952,6 +964,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void finishSpinner(float overscrollTop) {
+        //Log.e(TAG, "finishSpinner()"+overscrollTop);
         if (overscrollTop > mTotalDragDistance) {
             setRefreshing(true, true /* notify */);
         } else {
@@ -995,7 +1008,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
                 || mRefreshing || mNestedScrollInProgress) {
-            Log.e(TAG, "onTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
+            //Log.e(TAG, "onTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
@@ -1065,6 +1078,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void startDragging(float y) {
+        //Log.e(TAG, "startDragging()"+ y);
         final float yDiff = y - mInitialDownY;
         if (yDiff > mTouchSlop && !mIsBeingDragged) {
             mInitialMotionY = mInitialDownY + mTouchSlop;
@@ -1074,6 +1088,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void animateOffsetToCorrectPosition(int from, AnimationListener listener) {
+        //Log.e(TAG, "animateOffsetToCorrectPosition()"+ from);
         mFrom = from;
         mAnimateToCorrectPosition.reset();
         mAnimateToCorrectPosition.setDuration(ANIMATE_TO_TRIGGER_DURATION);
@@ -1086,6 +1101,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void animateOffsetToStartPosition(int from, AnimationListener listener) {
+        //Log.e(TAG, "animateOffsetToStartPosition()"+ from);
         if (mScale) {
             // Scale the item back down
             startScaleDownReturnToStartAnimation(from, listener);
@@ -1123,9 +1139,9 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         int targetTop = 0;
         targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
         int offset = targetTop - mCircleView.getTop();
-        Log.e(TAG, "moveToStart interpolatedTime="+interpolatedTime+" mFrom="+
+        /*Log.e(TAG, "moveToStart interpolatedTime="+interpolatedTime+" mFrom="+
                 mFrom+" mOriginalOffsetTop="+mOriginalOffsetTop+" targetTop="+targetTop+
-                " getTop="+mCircleView.getTop()+" offset="+offset);
+                " getTop="+mCircleView.getTop()+" offset="+offset);*/
         setTargetOffsetTopAndBottom(offset);
     }
 
@@ -1138,6 +1154,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     private void startScaleDownReturnToStartAnimation(int from,
                                                       Animation.AnimationListener listener) {
+        //Log.e(TAG, "startScaleDownReturnToStartAnimation()"+ from);
         mFrom = from;
         mStartingScale = mCircleView.getScaleX();
         mScaleDownToStartAnimation = new Animation() {
@@ -1165,7 +1182,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private void onSecondaryPointerUp(MotionEvent ev) {
         final int pointerIndex = ev.getActionIndex();
         final int pointerId = ev.getPointerId(pointerIndex);
-        Log.e(TAG,"pointerIndex="+pointerIndex+" pointerId="+pointerId +" mActivePointerId="+mActivePointerId);
+        //Log.e(TAG,"onSecondaryPointerUp() pointerIndex="+pointerIndex+" pointerId="+pointerId +" mActivePointerId="+mActivePointerId);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
             // active pointer and adjust accordingly.
