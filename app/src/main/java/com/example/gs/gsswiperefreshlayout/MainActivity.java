@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<String> mDataList2 = new ArrayList<>();
     private List<String> mDataList3 = new ArrayList<>();
     private GsRecyclerViewAdapter mAdapter1, mAdapter2, mAdapter3;
+    LinearLayoutManager mLinearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rv2.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
         rv2.setAdapter(mAdapter2);
 
-        rv3.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        rv3.setLayoutManager(mLinearLayoutManager);
         rv3.setAdapter(mAdapter3);
 
         bt1.setOnClickListener(this);
@@ -92,7 +94,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // 设定下拉圆圈的背景
         //srl1.setProgressBackgroundColor(R.color.RED);
-        srl1.setProgressViewOffset(false, 30, 100);
+        //srl1.setProgressViewOffset(false, 30, 100);
+        //srl1.setDistanceToTriggerSync(400);
+        //srl1.setProgressViewEndTarget(false, 400);
         //srl1.setProgressViewEndTarget(true, srl1.getProgressViewEndOffset());
 
         /*
@@ -174,7 +178,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
             case R.id.bt_2:
-
+                if(mLinearLayoutManager.getOrientation() == LinearLayoutManager.VERTICAL) {
+                    mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+                    rv3.setLayoutManager(mLinearLayoutManager);
+                }else {
+                    mLinearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+                    rv3.setLayoutManager(mLinearLayoutManager);
+                }
                 break;
             default:
                 break;
