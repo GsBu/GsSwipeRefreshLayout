@@ -63,4 +63,44 @@
             android:layout_height="match_parent" />
 
     </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
+
+    <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
+        android:id="@+id/srl_4"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/BISQUE">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aaaaaaaaaaaaaaaa" />
+
+    </com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout>
+
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="1" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="1" />
+
+            <Button
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="1" />
+        </LinearLayout>
+    </HorizontalScrollView>
 </LinearLayout>

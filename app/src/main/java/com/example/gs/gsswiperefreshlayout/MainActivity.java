@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.gs.gsswiperefreshlayout.adapter.GsRecyclerViewAdapter;
 import com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout;
@@ -20,8 +21,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private RecyclerView rv1, rv2, rv3;
-    private GsSwipeRefreshLayout srl1, srl2, srl3;
+    private GsSwipeRefreshLayout srl1, srl2, srl3, srl4;
     private Button bt1, bt2;
+    private TextView tv1;
 
     private List<String> mDataList1 = new ArrayList<>();
     private List<String> mDataList2 = new ArrayList<>();
@@ -40,9 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         srl1 = findViewById(R.id.srl_1);
         srl2 = findViewById(R.id.srl_2);
         srl3 = findViewById(R.id.srl_3);
+        srl4 = findViewById(R.id.srl_4);
 
         bt1 = findViewById(R.id.bt_1);
         bt2 = findViewById(R.id.bt_2);
+        tv1 = findViewById(R.id.tv_1);
 
         initData();
         mAdapter1 = new GsRecyclerViewAdapter(this, mDataList1);
@@ -131,6 +135,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // 刷新动画开始后回调到此方法
                         Log.e(TAG, "刷新onRefresh");
                         addData3(0);
+                    }
+                }
+        );
+
+        srl4.setOnRefreshListener(
+                new GsSwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // 刷新动画开始后回调到此方法
+                        Log.e(TAG, "刷新onRefresh");
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                tv1.setText("刷新后的数据");
+                                srl4.setRefreshing(false);
+                            }
+                        }, 2000);
                     }
                 }
         );

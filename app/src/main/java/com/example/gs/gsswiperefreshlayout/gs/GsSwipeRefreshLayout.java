@@ -380,6 +380,8 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         final TypedArray a = context.obtainStyledAttributes(attrs, LAYOUT_ATTRS);
         setEnabled(a.getBoolean(0, true));
         a.recycle();
+        Log.e(TAG, "mTotalDragDistance="+mTotalDragDistance +
+                " mOriginalOffsetTop="+mOriginalOffsetTop);
     }
 
     @Override
@@ -737,7 +739,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             mReturningToStart = false;
         }
 
-        if (!isEnabled() || mReturningToStart || canChildScrollUp()
+        if (!isEnabled() || mReturningToStart || canChildScrollUp() || canChildScrollLeft()
                 || mRefreshing || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
             Log.e(TAG, "onInterceptTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
@@ -888,7 +890,8 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     @Override
     public void onNestedScroll(final View target, final int dxConsumed, final int dyConsumed,
                                final int dxUnconsumed, final int dyUnconsumed) {
-        Log.e(TAG, "onNestedScroll mTotalUnconsumed="+mTotalUnconsumed);
+        Log.e(TAG, "onNestedScroll mTotalUnconsumed="+mTotalUnconsumed +" x未消耗="+dxUnconsumed+
+                " y未消耗="+dyUnconsumed +" x消耗="+dxConsumed+" y消耗="+dyConsumed);
         // Dispatch up to the nested parent first
         dispatchNestedScroll(dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed,
                 mParentOffsetInWindow);
@@ -980,22 +983,34 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void moveSpinner(float overscrollTop) {
-        //Log.e(TAG, "moveSpinner()"+overscrollTop);
         mProgress.setArrowEnabled(true);
         float originalDragPercent = overscrollTop / mTotalDragDistance;
 
+        //由于originalDragPercent可能大于1，所以dragPercent才是拖动的百分比
         float dragPercent = Math.min(1f, Math.abs(originalDragPercent));
         float adjustedPercent = (float) Math.max(dragPercent - .4, 0) * 5 / 3;
+        //弹簧效果的位移
         float extraOS = Math.abs(overscrollTop) - mTotalDragDistance;
+        //超过100%后可以被允许拖动的最大距离的二分之一，也是一个常数
         float slingshotDist = mUsingCustomStart ? mSpinnerOffsetEnd - mOriginalOffsetTop
                 : mSpinnerOffsetEnd;
+        //当弹簧效果位移小余0时，tensionSlingshotPercent为0，否则取弹簧位移于总高度的比值，最大为2
         float tensionSlingshotPercent = Math.max(0, Math.min(extraOS, slingshotDist * 2)
                 / slingshotDist);
+        //对称轴为tensionSlingshotPercent = 2的二次函数，0到2递增
+        //tensionSlingshotPercent的范围是0~2 tensionPercent的范围是0~0.5
         float tensionPercent = (float) ((tensionSlingshotPercent / 4) - Math.pow(
                 (tensionSlingshotPercent / 4), 2)) * 2f;
+        //弹力距离
         float extraMove = (slingshotDist) * tensionPercent * 2;
-
+        //想要移动到的目标位置
         int targetY = mOriginalOffsetTop + (int) ((slingshotDist * dragPercent) + extraMove);
+        Log.e(TAG, "moveSpinner overscrollTop="+overscrollTop+" mTotalDragDistance="+mTotalDragDistance+
+                " originalDragPercent="+originalDragPercent+" dragPercent="+dragPercent+
+                " extraOS="+extraOS+" slingshotDist="+slingshotDist+" tensionSlingshotPercent="+
+                tensionSlingshotPercent+" tensionPercent="+tensionPercent+" extraMove="+extraMove+
+                " targetY="+targetY +" mCurrentTargetOffsetTop="+mCurrentTargetOffsetTop+" 偏移量："+
+                (targetY - mCurrentTargetOffsetTop));
         // where 1.0f is a full circle
         if (mCircleView.getVisibility() != View.VISIBLE) {
             mCircleView.setVisibility(View.VISIBLE);
@@ -1034,7 +1049,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     private void finishSpinner(float overscrollTop) {
-        //Log.e(TAG, "finishSpinner()"+overscrollTop);
+        Log.e(TAG, "finishSpinner "+overscrollTop+" mTotalDragDistance="+mTotalDragDistance);
         if (overscrollTop > mTotalDragDistance) {
             setRefreshing(true, true /* notify */);
         } else {
@@ -1077,7 +1092,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             mReturningToStart = false;
         }
 
-        if (!isEnabled() || mReturningToStart || canChildScrollUp()
+        if (!isEnabled() || mReturningToStart || canChildScrollUp() || canChildScrollLeft()
                 || mRefreshing || mNestedScrollInProgress) {
             Log.e(TAG, "onTouchEvent mNestedScrollInProgress="+mNestedScrollInProgress);
             // Fail fast if we're not in a state where a swipe is possible
@@ -1259,7 +1274,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     }
 
     void setTargetOffsetTopAndBottom(int offset) {
-        Log.e(TAG, "setTargetOffsetTopAndBottom offset="+offset);
+        Log.e(TAG, "setTargetOffsetTopAndBottom offset="+offset+" getTop="+mCircleView.getTop());
         mCircleView.bringToFront();
         ViewCompat.offsetTopAndBottom(mCircleView, offset);
         mCurrentTargetOffsetTop = mCircleView.getTop();
