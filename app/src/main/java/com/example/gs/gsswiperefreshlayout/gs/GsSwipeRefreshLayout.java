@@ -110,6 +110,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     OnRefreshListener mListener;
     boolean mRefreshing = false;
     private int mTouchSlop;
+    //触发刷新所需要的偏移量（手指在屏幕上总共需要拖拽多少距离才可以触发刷新）
     private float mTotalDragDistance = -1;
 
     // If nested scrolling is enabled, the total amount that needed to be
@@ -149,7 +150,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
 
     protected int mOriginalOffsetTop;
 
-    int mSpinnerOffsetEnd;
+    int mSpinnerOffsetEnd;//触发刷新时，指示器所在的位置（距离顶部的位置）
 
     CircularProgressDrawable mProgress;
 
@@ -364,7 +365,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         createProgressView();
         setChildrenDrawingOrderEnabled(true);
         // the absolute offset has to take into account that the circle starts at an offset
-        // 触发刷新的偏离距离
+        // 触发刷新时，指示器所在的位置（距离顶部的位置）
         mSpinnerOffsetEnd = (int) (DEFAULT_CIRCLE_TARGET * metrics.density);
         //手指在屏幕上总共需要拖拽多少距离才可以触发刷新，默认是等于触发刷新的
         //偏离距离，如果自定义很大值，则需要拖动很大距离才可以触发刷新
@@ -1007,10 +1008,10 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         int targetY = mOriginalOffsetTop + (int) ((slingshotDist * dragPercent) + extraMove);
         Log.e(TAG, "moveSpinner overscrollTop="+overscrollTop+" mTotalDragDistance="+mTotalDragDistance+
                 " originalDragPercent="+originalDragPercent+" dragPercent="+dragPercent+
-                " extraOS="+extraOS+" slingshotDist="+slingshotDist+" tensionSlingshotPercent="+
+                " \nextraOS="+extraOS+" slingshotDist="+slingshotDist+" tensionSlingshotPercent="+
                 tensionSlingshotPercent+" tensionPercent="+tensionPercent+" extraMove="+extraMove+
                 " targetY="+targetY +" mCurrentTargetOffsetTop="+mCurrentTargetOffsetTop+" 偏移量："+
-                (targetY - mCurrentTargetOffsetTop));
+                (targetY - mCurrentTargetOffsetTop)+" (slingshotDist * dragPercent)="+(slingshotDist * dragPercent));
         // where 1.0f is a full circle
         if (mCircleView.getVisibility() != View.VISIBLE) {
             mCircleView.setVisibility(View.VISIBLE);

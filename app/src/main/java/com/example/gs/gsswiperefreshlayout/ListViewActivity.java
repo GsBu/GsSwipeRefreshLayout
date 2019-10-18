@@ -2,12 +2,12 @@ package com.example.gs.gsswiperefreshlayout;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 
 import com.example.gs.gsswiperefreshlayout.adapter.GsListViewAdapter;
-import com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class ListViewActivity extends AppCompatActivity {
     private static final String TAG = ListViewActivity.class.getSimpleName();
 
     private ListView lv1;
-    private GsSwipeRefreshLayout srl3;
+    private SwipeRefreshLayout srl1;
 
     private List<String> mDataList3 = new ArrayList<>();
     private GsListViewAdapter mAdapter3;
@@ -27,7 +27,12 @@ public class ListViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list_view);
 
         lv1 = findViewById(R.id.lv_1);
-        srl3 = findViewById(R.id.srl_3);
+        srl1 = findViewById(R.id.srl_1);
+
+        //srl1.setProgressViewOffset(false, 30, 100);
+        //srl1.setDistanceToTriggerSync(600);
+        //srl1.setProgressViewEndTarget(false, 400);
+        //srl1.setProgressViewEndTarget(true, srl1.getProgressViewEndOffset());
 
         initData();
         mAdapter3 = new GsListViewAdapter(this, R.layout.item_gs, mDataList3);
@@ -36,7 +41,7 @@ public class ListViewActivity extends AppCompatActivity {
     }
 
     private void initData(){
-        for(int i = 0; i < 3; i++){
+        for(int i = 0; i < 7; i++){
             mDataList3.add("数据" + i);
         }
     }
@@ -46,8 +51,8 @@ public class ListViewActivity extends AppCompatActivity {
     }
 
     private void initSwipeRefreshLayout() {
-        srl3.setOnRefreshListener(
-                new GsSwipeRefreshLayout.OnRefreshListener() {
+        srl1.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
                         // 刷新动画开始后回调到此方法
@@ -64,7 +69,7 @@ public class ListViewActivity extends AppCompatActivity {
             public void run() {
                 mDataList3.add(index, "增加"+mDataList3.size());
                 mAdapter3.notifyDataSetChanged();
-                srl3.setRefreshing(false);
+                srl1.setRefreshing(false);
             }
         }, 2000);
     }

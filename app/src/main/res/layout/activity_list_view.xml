@@ -6,15 +6,27 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ListViewActivity">
-    <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
-        android:id="@+id/srl_3"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_1"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="2dp"
+        android:layout_height="400dp"
         android:background="@color/BISQUE">
 
         <ListView
             android:id="@+id/lv_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <com.example.gs.gsswiperefreshlayout.gs.GsSwipeRefreshLayout
+        android:id="@+id/srl_2"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@color/BISQUE"
+        android:visibility="gone">
+
+        <ListView
+            android:id="@+id/lv_2"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

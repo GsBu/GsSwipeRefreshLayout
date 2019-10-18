@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 设定下拉圆圈的背景
         //srl1.setProgressBackgroundColor(R.color.RED);
         //srl1.setProgressViewOffset(false, 30, 100);
-        //srl1.setDistanceToTriggerSync(400);
+        //srl1.setDistanceToTriggerSync(800);
         //srl1.setProgressViewEndTarget(false, 400);
         //srl1.setProgressViewEndTarget(true, srl1.getProgressViewEndOffset());
 
