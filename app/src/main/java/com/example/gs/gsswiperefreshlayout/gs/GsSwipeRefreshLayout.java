@@ -520,6 +520,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             public void applyTransformation(float interpolatedTime, Transformation t) {
                 mProgress.setAlpha(
                         (int) (startingAlpha + ((endingAlpha - startingAlpha) * interpolatedTime)));
+                Log.e("Alpha","interpolatedTime = "+interpolatedTime+" Alpha="+mProgress.getAlpha());
             }
         };
         alpha.setDuration(ALPHA_ANIMATION_DURATION);
@@ -703,6 +704,8 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
             return ListViewCompat.canScrollList((ListView) mTarget, -1);
         }
         ViewCompat.canScrollVertically(mTarget, -1);
+        //RecyclerView.canScrollVertically(1)的值表示是否能向上滚动，false表示已经滚动到底部
+        //RecyclerView.canScrollVertically(-1)的值表示是否能向下滚动，false表示已经滚动到顶部
         return mTarget.canScrollVertically(-1);
     }
 
@@ -1024,14 +1027,21 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
         if (mScale) {
             setAnimationProgress(Math.min(1f, overscrollTop / mTotalDragDistance));
         }
+        // 设置进度圈透明度的动画，只有两个效果从MAX_ALPHA到STARTING_PROGRESS_ALPHA，
+        // 从STARTING_PROGRESS_ALPHA到MAX_ALPHA。一开始我以为这个动画是一直随着手指拖拽的距离逐渐进行，
+        // 实际只有两个效果。
         if (overscrollTop < mTotalDragDistance) {
+            Log.e("Alpha","进度圈的透明度11="+mProgress.getAlpha());
             if (mProgress.getAlpha() > STARTING_PROGRESS_ALPHA
                     && !isAnimationRunning(mAlphaStartAnimation)) {
+                Log.e("Alpha","开始startProgressAlphaStartAnimation动画 "+mProgress.getAlpha());
                 // Animate the alpha
                 startProgressAlphaStartAnimation();
             }
         } else {
+            Log.e("Alpha","进度圈的透明度22="+mProgress.getAlpha());
             if (mProgress.getAlpha() < MAX_ALPHA && !isAnimationRunning(mAlphaMaxAnimation)) {
+                Log.e("Alpha","开始startProgressAlphaMaxAnimation动画 "+mProgress.getAlpha());
                 // Animate the alpha
                 startProgressAlphaMaxAnimation();
             }
@@ -1249,6 +1259,7 @@ public class GsSwipeRefreshLayout extends ViewGroup implements NestedScrollingPa
     private final Animation mAnimateToStartPosition = new Animation() {
         @Override
         public void applyTransformation(float interpolatedTime, Transformation t) {
+            Log.e(TAG, "mAnimateToStartPosition interpolatedTime="+interpolatedTime);
             moveToStart(interpolatedTime);
         }
     };
